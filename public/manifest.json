@@ -1,0 +1,43 @@
+{
+  "name": "智能物品管家 - Smart Item Keeper",
+  "short_name": "物品管家",
+  "description": "通过自然语言记录和查询物品存放位置的 AI 应用",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "zh-CN",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "记录物品",
+      "short_name": "记录",
+      "description": "快速记录物品位置",
+      "url": "/?action=record",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "查询物品",
+      "short_name": "查询",
+      "description": "查找物品位置",
+      "url": "/?action=search",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
