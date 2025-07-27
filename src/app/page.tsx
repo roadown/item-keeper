@@ -658,7 +658,7 @@ export default function Home() {
 
       {/* 回收站界面 */}
       {showRecycleBin && (
-        <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-400">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 border-l-4 border-orange-400 mx-2 sm:mx-0">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-800">
               🗑️ 回收站 ({recycleBin.length} 个项目)
@@ -721,28 +721,38 @@ export default function Home() {
       )}
 
       {/* 智能输入区域 */}
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mx-2 sm:mx-0">
         <h2 className="text-xl font-semibold mb-2 text-gray-800">
           智能物品助手
         </h2>
         <p className="text-gray-600 text-sm mb-4">
           支持记录、查询、删除、分类、统计 - 一个输入框搞定所有需求
         </p>
-        <div className="flex gap-3">
-          <input
-            type="text"
+        <div className="flex flex-col sm:flex-row gap-3">
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="试试：我把身份证放在抽屉里 / 身份证在哪 / 删除身份证 / 给身份证加上证件标签 / 统计我的物品"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-base"
-            onKeyPress={(e) => e.key === 'Enter' && !isLoading && handleSubmit()}
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-base resize-none min-h-[48px] max-h-32"
+            rows={1}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+                e.preventDefault()
+                handleSubmit()
+              }
+            }}
+            onInput={(e) => {
+              const textarea = e.target as HTMLTextAreaElement
+              textarea.style.height = 'auto'
+              textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px'
+            }}
           />
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex-shrink-0"
           >
-            {isLoading ? '🤖 AI处理中...' : '发送'}
+            {isLoading ? '🤖 处理中...' : '发送'}
           </button>
         </div>
         
@@ -818,7 +828,7 @@ export default function Home() {
 
       {/* 所有记录列表 */}
       {records.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mx-2 sm:mx-0">
           <h2 className="text-xl font-semibold mb-4 text-gray-800">
             所有记录 ({records.length})
           </h2>
