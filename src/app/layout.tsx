@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   title: '智能物品管家 - Smart Item Keeper',
   description: '通过自然语言记录和查询物品存放位置的 AI 应用',
   manifest: '/manifest.json',
-  themeColor: '#3b82f6',
-  viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -19,6 +17,13 @@ export const metadata: Metadata = {
     icon: '/icon.svg',
     apple: '/icon-192x192.png'
   }
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  shrinkToFit: 'no',
+  themeColor: '#3b82f6'
 }
 
 export default function RootLayout({
