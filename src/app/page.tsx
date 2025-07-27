@@ -733,8 +733,8 @@ export default function Home() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="试试：我把身份证放在抽屉里 / 身份证在哪 / 删除身份证 / 给身份证加上证件标签 / 统计我的物品"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-base resize-none min-h-[48px] max-h-32"
-            rows={1}
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-base resize-none min-h-[96px] max-h-48"
+            rows={4}
             onKeyPress={(e) => {
               if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
                 e.preventDefault()
@@ -744,7 +744,8 @@ export default function Home() {
             onInput={(e) => {
               const textarea = e.target as HTMLTextAreaElement
               textarea.style.height = 'auto'
-              textarea.style.height = Math.min(textarea.scrollHeight, 128) + 'px'
+              const newHeight = Math.max(96, Math.min(textarea.scrollHeight, 192))
+              textarea.style.height = newHeight + 'px'
             }}
           />
           <button
