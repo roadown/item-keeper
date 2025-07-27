@@ -441,6 +441,26 @@ export default function Home() {
     event.target.value = ''
   }
 
+  // 手动删除单个搜索结果
+  const deleteSearchResult = (itemToDelete: ItemRecord) => {
+    if (confirm(`确定要删除 "${itemToDelete.item}" 吗？`)) {
+      // 移动到回收站
+      moveToRecycleBin([itemToDelete], '手动删除搜索结果')
+      
+      // 从记录中移除
+      setRecords(prev => prev.filter(record => record.id !== itemToDelete.id))
+      
+      // 从搜索结果中移除
+      setSearchResults(prev => prev.filter(record => record.id !== itemToDelete.id))
+      
+      // 更新搜索上下文
+      setLastSearchContext(prev => prev.filter(record => record.id !== itemToDelete.id))
+      
+      setActionResult(`已删除 "${itemToDelete.item}" (已移至回收站)`)
+      setLastAction('delete')
+    }
+  }
+
   const handleDelete = () => {
     const itemToDelete = extractItemFromQuery(input)
     const itemsToDelete = records.filter(record => 
@@ -761,18 +781,29 @@ export default function Home() {
                 {actionResult && <p className="text-blue-600 text-sm">{actionResult}</p>}
                 {searchResults.map(record => (
                   <div key={record.id} className="p-3 bg-blue-50 rounded border-l-4 border-blue-400">
-                    <p className="font-medium text-blue-900">{record.item}</p>
-                    <p className="text-blue-700">📍 位置：{record.location}</p>
-                    {record.tags.length > 0 && (
-                      <div className="mt-2">
-                        {record.tags.map(tag => (
-                          <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded mr-1">
-                            {tag}
-                          </span>
-                        ))}
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <p className="font-medium text-blue-900">{record.item}</p>
+                        <p className="text-blue-700">📍 位置：{record.location}</p>
+                        {record.tags.length > 0 && (
+                          <div className="mt-2">
+                            {record.tags.map(tag => (
+                              <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded mr-1">
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        <p className="text-sm text-blue-600 mt-1">原始记录：{record.rawInput}</p>
                       </div>
-                    )}
-                    <p className="text-sm text-blue-600 mt-1">原始记录：{record.rawInput}</p>
+                      <button
+                        onClick={() => deleteSearchResult(record)}
+                        className="ml-3 px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition-colors flex-shrink-0"
+                        title={`删除 ${record.item}`}
+                      >
+                        🗑️ 删除
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -795,7 +826,7 @@ export default function Home() {
             {records.map(record => (
               <div key={record.id} className="p-4 border border-gray-200 rounded-lg">
                 <div className="flex justify-between items-start">
-                  <div>
+                  <div className="flex-1">
                     <p className="font-medium text-gray-900">{record.item}</p>
                     <p className="text-gray-600">位置：{record.location}</p>
                     {record.tags.length > 0 && (
@@ -811,9 +842,18 @@ export default function Home() {
                       {record.rawInput}
                     </p>
                   </div>
-                  <span className="text-xs text-gray-400">
-                    {new Date(record.createdAt).toLocaleString('zh-CN')}
-                  </span>
+                  <div className="flex flex-col items-end gap-2 ml-4">
+                    <span className="text-xs text-gray-400">
+                      {new Date(record.createdAt).toLocaleString('zh-CN')}
+                    </span>
+                    <button
+                      onClick={() => deleteSearchResult(record)}
+                      className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600 transition-colors"
+                      title={`删除 ${record.item}`}
+                    >
+                      🗑️ 删除
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

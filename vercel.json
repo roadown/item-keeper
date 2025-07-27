@@ -2,9 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "env": {
-    "KIMI_API_KEY": "@kimi-api-key"
-  },
   "headers": [
     {
       "source": "/sw.js",
