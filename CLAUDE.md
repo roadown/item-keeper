@@ -71,29 +71,36 @@ The application will store records in this format:
 1. ✅ **MVP (Web Prototype)** - Basic input/query interface with local storage
 2. ✅ **AI Enhancement** - Kimi API integration with semantic analysis
 3. ✅ **Data Persistence** - localStorage with backup/restore capabilities
-4. 🔜 **Multi-platform Sync** - User accounts and cloud synchronization
-5. 🔜 **Voice Input** - Whisper/Vosk integration for speech recognition
+4. ✅ **PWA Deployment** - Vercel deployment with mobile PWA support
+5. ✅ **UX Optimization** - Mobile responsive design and manual controls
+6. 🔜 **Multi-platform Sync** - User accounts and cloud synchronization
+7. 🔜 **Voice Input** - Whisper/Vosk integration for speech recognition
 
 ## Core Features Implemented
 
-- **Single Input Interface**: Unified input box with AI-powered intent detection
+- **Single Input Interface**: Unified textarea with AI-powered intent detection
 - **Kimi AI Integration**: Natural language processing with Moonshot API
 - **Comprehensive Operations**: Record, search, delete, classify, and statistics
 - **Semantic Search**: AI-powered fuzzy matching and context understanding
 - **Recycle Bin System**: Safe deletion with restore capabilities
 - **Smart Context Awareness**: Handles "delete this result" type references
+- **Manual Delete Controls**: Quick delete buttons in search results and record lists
 - **Data Persistence**: localStorage with auto-save functionality
 - **Data Management**: Export/import, backup/restore capabilities
+- **Progressive Web App**: PWA with offline support and installable features
+- **Mobile Responsive**: Optimized for mobile devices with touch-friendly interface
 - **Auto-cleanup**: 30-day automatic recycle bin maintenance
 
 ## Interface Design
 
-The application uses a single input box approach similar to ChatGPT:
-- Users input natural language in one field
-- AI automatically detects intent (record/search/delete/classify/statistics)
-- Context-aware processing with search result memory
-- Visual feedback with confidence scores and detailed results
-- Recycle bin interface with restore/permanent delete options
+The application uses a single textarea approach similar to ChatGPT:
+- **Multi-line Input**: 4-row default height, expandable to 8 rows with auto-resize
+- **Mobile Optimized**: Responsive layout with touch-friendly controls
+- **Smart Interactions**: Enter to send, Shift+Enter for new line
+- **Manual Controls**: Quick delete buttons on search results and record lists
+- **AI Processing**: Automatic intent detection with visual feedback
+- **Context Awareness**: Handles complex references like "delete this result"
+- **Progressive Web App**: Installable with offline capabilities
 
 ## AI Features
 
