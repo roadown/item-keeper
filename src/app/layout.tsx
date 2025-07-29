@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { AuthProvider } from '@/components/AuthProvider'
+import HeaderActions from '@/components/HeaderActions'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -51,21 +53,28 @@ export default function RootLayout({
         }} />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-          <header className="bg-white shadow-sm border-b">
-            <div className="max-w-4xl mx-auto px-4 py-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                智能物品管家
-              </h1>
-              <p className="text-gray-600 text-sm">
-                通过自然语言记录和查询物品位置
-              </p>
-            </div>
-          </header>
-          <main className="max-w-4xl mx-auto px-2 sm:px-4 py-8">
-            {children}
-          </main>
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+            <header className="bg-white shadow-sm border-b">
+              <div className="max-w-4xl mx-auto px-4 py-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">
+                      智能物品管家
+                    </h1>
+                    <p className="text-gray-600 text-sm">
+                      通过自然语言记录和查询物品位置
+                    </p>
+                  </div>
+                  <HeaderActions />
+                </div>
+              </div>
+            </header>
+            <main className="max-w-4xl mx-auto px-2 sm:px-4 py-8">
+              {children}
+            </main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )

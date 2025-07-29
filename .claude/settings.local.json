@@ -10,7 +10,10 @@
       "Bash(git commit:*)",
       "Bash(npm run build:*)",
       "Bash(vercel:*)",
-      "WebFetch(domain:item-keeper.vercel.app)"
+      "WebFetch(domain:item-keeper.vercel.app)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": []
   }
