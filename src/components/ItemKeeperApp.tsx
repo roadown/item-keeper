@@ -997,73 +997,98 @@ export default function ItemKeeperApp() {
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
-        
+
+      {/* 操作反馈和搜索结果 */}
+      <div className="container-content space-y-6">
         {/* 操作反馈 */}
         {lastAction === 'record' && (
-          <div className="mt-4 p-3 bg-green-50 rounded border-l-4 border-green-400">
-            <p className="text-green-800 font-medium">✅ 记录成功！</p>
-            {actionResult && <p className="text-green-700 text-sm mt-1">{actionResult}</p>}
+          <div className="card p-4 border-l-4 border-success-400 bg-success-50 animate-slide-up">
+            <p className="text-success-800 font-medium flex items-center gap-2">
+              <span>✅</span> 记录成功！
+            </p>
+            {actionResult && <p className="text-success-700 text-sm mt-1">{actionResult}</p>}
           </div>
         )}
 
         {lastAction === 'delete' && actionResult && (
-          <div className="mt-4 p-3 bg-red-50 rounded border-l-4 border-red-400">
-            <p className="text-red-800 font-medium">🗑️ {actionResult}</p>
+          <div className="card p-4 border-l-4 border-error-400 bg-error-50 animate-slide-up">
+            <p className="text-error-800 font-medium flex items-center gap-2">
+              <span>🗑️</span> {actionResult}
+            </p>
           </div>
         )}
 
         {lastAction === 'classify' && actionResult && (
-          <div className="mt-4 p-3 bg-purple-50 rounded border-l-4 border-purple-400">
-            <p className="text-purple-800 font-medium">🏷️ {actionResult}</p>
+          <div className="card p-4 border-l-4 border-primary-400 bg-primary-50 animate-slide-up">
+            <p className="text-primary-800 font-medium flex items-center gap-2">
+              <span>🏷️</span> {actionResult}
+            </p>
           </div>
         )}
 
         {lastAction === 'statistics' && actionResult && (
-          <div className="mt-4 p-4 bg-gray-50 rounded border-l-4 border-gray-400">
-            <pre className="text-gray-800 text-sm whitespace-pre-line font-mono">{actionResult}</pre>
+          <div className="card p-6 border-l-4 border-neutral-400 bg-neutral-50 animate-slide-up">
+            <pre className="text-neutral-800 text-sm whitespace-pre-line font-mono">{actionResult}</pre>
           </div>
         )}
 
         {/* 搜索结果 */}
         {lastAction === 'search' && (
-          <div className="mt-4">
+          <div className="animate-slide-up">
             {searchResults.length > 0 ? (
-              <div className="space-y-2">
-                <h3 className="font-medium text-gray-700">🔍 找到以下结果：</h3>
-                {actionResult && <p className="text-blue-600 text-sm">{actionResult}</p>}
-                {searchResults.map(record => (
-                  <div key={record.id} className="p-3 bg-blue-50 rounded border-l-4 border-blue-400">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <p className="font-medium text-blue-900">{record.item}</p>
-                        <p className="text-blue-700">📍 位置：{record.location}</p>
-                        {record.tags.length > 0 && (
-                          <div className="mt-2">
-                            {record.tags.map(tag => (
-                              <span key={tag} className="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded mr-1">
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <p className="text-sm text-blue-600 mt-1">原始记录：{record.rawInput}</p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🔍</span>
+                  <h3 className="text-lg font-semibold text-neutral-800">搜索结果</h3>
+                  <span className="badge-primary">{searchResults.length} 个结果</span>
+                </div>
+                {actionResult && (
+                  <p className="text-primary-600 text-sm bg-primary-50 px-3 py-2 rounded-lg">
+                    {actionResult}
+                  </p>
+                )}
+                <div className="grid gap-3">
+                  {searchResults.map(record => (
+                    <div key={record.id} className="card-hover p-4 border-l-4 border-primary-400">
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 space-y-2">
+                          <h4 className="font-semibold text-neutral-900">{record.item}</h4>
+                          <p className="text-neutral-600 flex items-center gap-1">
+                            <span>📍</span> {record.location}
+                          </p>
+                          {record.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {record.tags.map(tag => (
+                                <span key={tag} className="tag-primary">
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                          <p className="text-sm text-neutral-500">
+                            {record.rawInput}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => deleteSearchResult(record)}
+                          className="btn-error ml-4 px-3 py-1 text-xs"
+                          title={`删除 ${record.item}`}
+                        >
+                          🗑️ 删除
+                        </button>
                       </div>
-                      <button
-                        onClick={() => deleteSearchResult(record)}
-                        className="ml-3 px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600 transition-colors flex-shrink-0"
-                        title={`删除 ${record.item}`}
-                      >
-                        🗑️ 删除
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ) : (
-              <div className="p-3 bg-yellow-50 rounded border-l-4 border-yellow-400">
-                <p className="text-yellow-800">😅 没有找到相关物品，试试其他关键词？</p>
+              <div className="card p-6 border-l-4 border-warning-400 bg-warning-50 text-center">
+                <div className="text-4xl mb-2">😅</div>
+                <p className="text-warning-800 font-medium">没有找到相关物品</p>
+                <p className="text-warning-600 text-sm mt-1">试试其他关键词？</p>
               </div>
             )}
           </div>
