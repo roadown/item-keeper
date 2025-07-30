@@ -14,7 +14,10 @@
       "Bash(npm uninstall:*)",
       "Bash(npm run type-check:*)",
       "Bash(npm run dev:*)",
-      "Bash(npx vercel:*)"
+      "Bash(npx vercel:*)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)"
     ],
     "deny": []
   }
