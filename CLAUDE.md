@@ -8,7 +8,7 @@ This is "智能物品管家 (Smart Item Keeper)" - an AI-powered application tha
 
 ## Project Status
 
-This project has completed the **multi-platform synchronization phase**. The application now supports full cloud synchronization with user authentication, offline-first design, and intelligent data merging capabilities.
+This project has completed **all planned implementation phases**. The application is fully functional with cloud synchronization, user authentication, offline-first design, and intelligent data merging capabilities. The voice input phase was skipped as users can utilize system-level voice-to-text functionality.
 
 ## Current Architecture
 
@@ -59,12 +59,57 @@ The application will store records in this format:
 - Node.js 18+
 - npm 9+
 - Kimi API key (Moonshot AI) for AI features
-- Supabase project (optional, for cloud sync)
+- Supabase project for cloud sync and user authentication
 - Environment variables in `.env.local`:
   - `KIMI_API_KEY=your_kimi_api_key`
-  - `NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url` (optional)
-  - `NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key` (optional)
+  - `NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key`
   - `SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key` (optional)
+
+## Database Setup
+
+The application requires the following Supabase database tables:
+
+```sql
+-- 创建物品记录表
+CREATE TABLE item_records (
+  id TEXT PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  item TEXT NOT NULL,
+  location TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL,
+  raw_input TEXT NOT NULL,
+  source TEXT DEFAULT 'text',
+  tags TEXT[] DEFAULT '{}',
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 创建回收站表
+CREATE TABLE recycle_bin (
+  id TEXT PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  item TEXT NOT NULL,
+  location TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL,
+  raw_input TEXT NOT NULL,
+  source TEXT DEFAULT 'text',
+  tags TEXT[] DEFAULT '{}',
+  deleted_at TIMESTAMPTZ NOT NULL,
+  delete_reason TEXT,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 启用RLS
+ALTER TABLE item_records ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recycle_bin ENABLE ROW LEVEL SECURITY;
+
+-- 创建RLS策略：用户只能访问自己的数据
+CREATE POLICY "Users can only access their own records"
+ON item_records FOR ALL USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can only access their own recycle bin"
+ON recycle_bin FOR ALL USING (auth.uid() = user_id);
+```
 
 ## API Integration
 
@@ -82,7 +127,7 @@ The application will store records in this format:
 4. ✅ **PWA Deployment** - Vercel deployment with mobile PWA support
 5. ✅ **UX Optimization** - Mobile responsive design and manual controls
 6. ✅ **Multi-platform Sync** - User accounts and cloud synchronization with Supabase
-7. 🔜 **Voice Input** - Whisper/Vosk integration for speech recognition
+7. ❌ **Voice Input** - Skipped (users can use system voice input)
 
 ## Core Features Implemented
 

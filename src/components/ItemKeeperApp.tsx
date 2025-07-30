@@ -124,7 +124,11 @@ export default function ItemKeeperApp() {
 
   // 同步到云端
   const handleSyncToCloud = async () => {
-    if (!user || !isSupabaseConfigured) return
+    if (!user || !isSupabaseConfigured) {
+      setActionResult('请先登录账号才能使用同步功能')
+      setLastAction('delete')
+      return
+    }
 
     setIsLoading(true)
     const result = await syncManager.syncToCloud(user.id)
@@ -142,7 +146,11 @@ export default function ItemKeeperApp() {
 
   // 从云端同步
   const handleSyncFromCloud = async () => {
-    if (!user || !isSupabaseConfigured) return
+    if (!user || !isSupabaseConfigured) {
+      setActionResult('请先登录账号才能使用同步功能')
+      setLastAction('delete')
+      return
+    }
 
     setIsLoading(true)
     const result = await syncManager.syncFromCloud(user.id)
@@ -166,7 +174,11 @@ export default function ItemKeeperApp() {
 
   // 智能同步
   const handleIntelligentSync = async () => {
-    if (!user || !isSupabaseConfigured) return
+    if (!user || !isSupabaseConfigured) {
+      setActionResult('请先登录账号才能使用同步功能')
+      setLastAction('delete')
+      return
+    }
 
     setIsLoading(true)
     const result = await syncManager.intelligentSync(user.id)

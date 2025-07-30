@@ -13,7 +13,8 @@
       "WebFetch(domain:item-keeper.vercel.app)",
       "Bash(npm uninstall:*)",
       "Bash(npm run type-check:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(npx vercel:*)"
     ],
     "deny": []
   }
