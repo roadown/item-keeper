@@ -870,8 +870,6 @@ export default function ItemKeeperApp() {
           </div>
         </div>
       </div>
-        </div>
-      </div>
 
       {/* 回收站界面 */}
       {showRecycleBin && (
