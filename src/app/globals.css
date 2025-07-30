@@ -1,27 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    /* 亮色主题 */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --surface: 0 0% 98%;
+    --surface-variant: 240 4.8% 95.9%;
+    --border: 240 5.9% 90%;
+    --border-variant: 240 3.7% 85.9%;
+    --ring: 240 10% 3.9%;
+    
+    /* 品牌色 */
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 98%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 98%;
+    
+    /* 语义色 */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    --warning: 43 96% 56%;
+    --warning-foreground: 0 0% 98%;
+    --error: 346 77% 49%;
+    --error-foreground: 0 0% 98%;
+    
+    /* 中性色 */
+    --neutral: 240 3.8% 46.1%;
+    --neutral-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* 暗色主题 */
+      --background: 240 10% 3.9%;
+      --foreground: 0 0% 98%;
+      --surface: 240 6% 10%;
+      --surface-variant: 240 3.7% 15.9%;
+      --border: 240 3.7% 15.9%;
+      --border-variant: 240 5.9% 20%;
+      --ring: 240 4.9% 83.9%;
+      
+      /* 品牌色 */
+      --primary: 199 89% 48%;
+      --primary-foreground: 240 10% 3.9%;
+      --accent: 25 95% 53%;
+      --accent-foreground: 240 10% 3.9%;
+      
+      /* 语义色 */
+      --success: 142 76% 36%;
+      --success-foreground: 240 10% 3.9%;
+      --warning: 43 96% 56%;
+      --warning-foreground: 240 10% 3.9%;
+      --error: 346 77% 49%;
+      --error-foreground: 240 10% 3.9%;
+      
+      /* 中性色 */
+      --neutral: 240 3.8% 46.1%;
+      --neutral-foreground: 240 10% 3.9%;
+      --muted: 240 6% 10%;
+      --muted-foreground: 240 5% 64.9%;
+    }
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-neutral-50 via-primary-50/30 to-accent-50/20 text-foreground font-sans antialiased min-h-screen;
+    font-feature-settings: 'cv01', 'cv02', 'cv03', 'cv04';
+  }
+
+  /* 暗色模式下的背景 */
+  @media (prefers-color-scheme: dark) {
+    body {
+      @apply bg-gradient-to-br from-neutral-950 via-primary-950/50 to-accent-950/20;
+    }
+  }
+
+  /* 提升字体渲染质量 */
+  body, input, textarea, button {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* 改善焦点可见性 */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-background;
+  }
+
+  /* 滚动条样式 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-neutral-400;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-track {
+      @apply bg-neutral-800;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      @apply bg-neutral-600;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-neutral-500;
+    }
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  /* 按钮组件样式 */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 text-primary-50 hover:bg-primary-700 active:bg-primary-800 shadow-sm hover:shadow-md focus-visible:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-neutral-100 text-neutral-900 hover:bg-neutral-200 active:bg-neutral-300 border border-neutral-200 focus-visible:ring-neutral-500;
+  }
+
+  .btn-accent {
+    @apply btn bg-accent-600 text-accent-50 hover:bg-accent-700 active:bg-accent-800 shadow-sm hover:shadow-md focus-visible:ring-accent-500;
+  }
+
+  .btn-success {
+    @apply btn bg-success-600 text-success-50 hover:bg-success-700 active:bg-success-800 shadow-sm hover:shadow-md focus-visible:ring-success-500;
+  }
+
+  .btn-warning {
+    @apply btn bg-warning-500 text-warning-950 hover:bg-warning-600 active:bg-warning-700 shadow-sm hover:shadow-md focus-visible:ring-warning-500;
+  }
+
+  .btn-error {
+    @apply btn bg-error-600 text-error-50 hover:bg-error-700 active:bg-error-800 shadow-sm hover:shadow-md focus-visible:ring-error-500;
+  }
+
+  .btn-ghost {
+    @apply btn text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 focus-visible:ring-neutral-500;
+  }
+
+  .btn-outline {
+    @apply btn border border-primary-300 text-primary-700 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+  }
+
+  /* 输入框组件样式 */
+  .input {
+    @apply w-full rounded-xl border border-neutral-300 bg-neutral-50/50 px-4 py-3 text-sm placeholder-neutral-500 transition-all duration-200 focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .textarea {
+    @apply input resize-none;
+  }
+
+  /* 卡片组件样式 */
+  .card {
+    @apply rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-sm shadow-sm transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-lg hover:shadow-primary-500/5 hover:-translate-y-0.5;
+  }
+
+  /* 标签组件样式 */
+  .tag {
+    @apply inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-medium;
+  }
+
+  .tag-primary {
+    @apply tag bg-primary-100 text-primary-800;
+  }
+
+  .tag-secondary {
+    @apply tag bg-neutral-100 text-neutral-800;
+  }
+
+  .tag-accent {
+    @apply tag bg-accent-100 text-accent-800;
+  }
+
+  .tag-success {
+    @apply tag bg-success-100 text-success-800;
+  }
+
+  .tag-warning {
+    @apply tag bg-warning-100 text-warning-800;
+  }
+
+  .tag-error {
+    @apply tag bg-error-100 text-error-800;
+  }
+
+  /* 徽章组件样式 */
+  .badge {
+    @apply inline-flex items-center justify-center rounded-full px-2 py-1 text-xs font-semibold;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-600 text-primary-50;
+  }
+
+  .badge-success {
+    @apply badge bg-success-600 text-success-50;
+  }
+
+  .badge-warning {
+    @apply badge bg-warning-500 text-warning-950;
+  }
+
+  .badge-error {
+    @apply badge bg-error-600 text-error-50;
+  }
+
+  /* 容器样式 */
+  .container-app {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-content {
+    @apply mx-auto max-w-4xl px-4 sm:px-6;
+  }
+
+  .container-narrow {
+    @apply mx-auto max-w-2xl px-4 sm:px-6;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  .bg-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .bg-glass-dark {
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* 动画工具类 */
+  .animate-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .animate-bounce-soft {
+    animation: bounceSoft 0.6s ease-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
 }

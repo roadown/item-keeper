@@ -726,113 +726,150 @@ export default function ItemKeeperApp() {
   return (
     <div className="space-y-8">
       {/* 顶部工具栏 */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          {user && (
-            <span className="text-sm text-gray-600">
-              👤 {user.email}
-            </span>
-          )}
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setShowRecycleBin(!showRecycleBin)}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-          >
-            🗑️ 回收站
-            {recycleBin.length > 0 && (
-              <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                {recycleBin.length}
-              </span>
-            )}
-          </button>
-
-          {/* 同步菜单 */}
-          {user && isSupabaseConfigured && (
-            <div className="relative" data-menu="sync-menu">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setShowSyncMenu(!showSyncMenu)
-                }}
-                className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
-              >
-                ☁️ 同步
-              </button>
-              {showSyncMenu && (
-                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border z-10">
-                  {syncStatus && (
-                    <div className="px-4 py-3 border-b bg-gray-50 text-xs">
-                      <p className="font-medium text-gray-700">同步状态</p>
-                      <p>本地: {syncStatus.localRecords + syncStatus.localRecycleBin} 条</p>
-                      <p>云端: {syncStatus.cloudRecords + syncStatus.cloudRecycleBin} 条</p>
-                      {syncStatus.lastSync && (
-                        <p>最后同步: {new Date(syncStatus.lastSync).toLocaleString('zh-CN')}</p>
-                      )}
-                    </div>
-                  )}
-                  <button
-                    onClick={handleIntelligentSync}
-                    disabled={isLoading}
-                    className="block w-full text-left px-4 py-2 text-green-700 hover:bg-green-50 rounded-t-lg disabled:opacity-50"
-                  >
-                    🤖 智能同步
-                  </button>
-                  <button
-                    onClick={handleSyncToCloud}
-                    disabled={isLoading}
-                    className="block w-full text-left px-4 py-2 text-blue-700 hover:bg-blue-50 disabled:opacity-50"
-                  >
-                    ⬆️ 上传到云端
-                  </button>
-                  <button
-                    onClick={handleSyncFromCloud}
-                    disabled={isLoading}
-                    className="block w-full text-left px-4 py-2 text-purple-700 hover:bg-purple-50 rounded-b-lg disabled:opacity-50"
-                  >
-                    ⬇️ 从云端下载
-                  </button>
-                </div>
-              )}
+      <div className="container-content">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-primary-600 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">📦</span>
+              </div>
+              <h1 className="text-2xl font-bold text-neutral-900">智能物品管家</h1>
             </div>
-          )}
-          
-          <div className="relative" data-menu="data-menu">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                setShowDataMenu(!showDataMenu)
-              }}
-              className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
-            >
-              📁 数据
-            </button>
-            {showDataMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-10">
-                <button
-                  onClick={exportData}
-                  className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-t-lg"
-                >
-                  📤 导出数据
-                </button>
-                <label className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-50 cursor-pointer">
-                  📥 导入数据
-                  <input
-                    type="file"
-                    accept=".json"
-                    onChange={importData}
-                    className="hidden"
-                  />
-                </label>
-                <button
-                  onClick={clearAllData}
-                  className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-b-lg"
-                >
-                  🗑️ 清空所有数据
-                </button>
+            {user && (
+              <div className="hidden sm:flex items-center gap-2 ml-4">
+                <div className="w-6 h-6 rounded-full bg-success-100 flex items-center justify-center">
+                  <span className="text-success-600 text-xs">✓</span>
+                </div>
+                <span className="text-sm text-neutral-600">
+                  {user.email}
+                </span>
+                {isSupabaseConfigured && (
+                  <span className="tag-success">已同步</span>
+                )}
               </div>
             )}
           </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setShowRecycleBin(!showRecycleBin)}
+              className="btn-secondary flex items-center gap-2"
+            >
+              <span className="w-4 h-4">🗑️</span>
+              回收站
+              {recycleBin.length > 0 && (
+                <span className="badge-error">
+                  {recycleBin.length}
+                </span>
+              )}
+            </button>
+
+            {/* 同步菜单 */}
+            {user && isSupabaseConfigured && (
+              <div className="relative" data-menu="sync-menu">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowSyncMenu(!showSyncMenu)
+                  }}
+                  className="btn-success flex items-center gap-2"
+                >
+                  <span className="w-4 h-4">☁️</span>
+                  同步
+                </button>
+                {showSyncMenu && (
+                  <div className="absolute right-0 mt-2 w-72 card shadow-xl border-0 z-20 animate-slide-down">
+                    {syncStatus && (
+                      <div className="px-4 py-3 border-b border-neutral-200 bg-neutral-50 rounded-t-2xl">
+                        <p className="font-medium text-neutral-800 mb-2">📊 同步状态</p>
+                        <div className="grid grid-cols-2 gap-2 text-xs text-neutral-600">
+                          <div>本地: {syncStatus.localRecords + syncStatus.localRecycleBin} 条</div>
+                          <div>云端: {syncStatus.cloudRecords + syncStatus.cloudRecycleBin} 条</div>
+                        </div>
+                        {syncStatus.lastSync && (
+                          <p className="text-xs text-neutral-500 mt-1">
+                            最后同步: {new Date(syncStatus.lastSync).toLocaleString('zh-CN')}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    <div className="p-2 space-y-1">
+                      <button
+                        onClick={handleIntelligentSync}
+                        disabled={isLoading}
+                        className="w-full text-left px-3 py-2 text-sm text-primary-700 hover:bg-primary-50 rounded-lg disabled:opacity-50 transition-colors flex items-center gap-2"
+                      >
+                        <span className="w-4 h-4">🤖</span>
+                        智能同步
+                      </button>
+                      <button
+                        onClick={handleSyncToCloud}
+                        disabled={isLoading}
+                        className="w-full text-left px-3 py-2 text-sm text-accent-700 hover:bg-accent-50 rounded-lg disabled:opacity-50 transition-colors flex items-center gap-2"
+                      >
+                        <span className="w-4 h-4">⬆️</span>
+                        上传到云端
+                      </button>
+                      <button
+                        onClick={handleSyncFromCloud}
+                        disabled={isLoading}
+                        className="w-full text-left px-3 py-2 text-sm text-primary-700 hover:bg-primary-50 rounded-lg disabled:opacity-50 transition-colors flex items-center gap-2"
+                      >
+                        <span className="w-4 h-4">⬇️</span>
+                        从云端下载
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <div className="relative" data-menu="data-menu">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowDataMenu(!showDataMenu)
+                }}
+                className="btn-outline flex items-center gap-2"
+              >
+                <span className="w-4 h-4">📁</span>
+                数据
+              </button>
+              {showDataMenu && (
+                <div className="absolute right-0 mt-2 w-48 card shadow-xl border-0 z-20 animate-slide-down">
+                  <div className="p-2 space-y-1">
+                    <button
+                      onClick={exportData}
+                      className="w-full text-left px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <span className="w-4 h-4">📤</span>
+                      导出数据
+                    </button>
+                    <label className="w-full text-left px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 rounded-lg cursor-pointer transition-colors flex items-center gap-2">
+                      <span className="w-4 h-4">📥</span>
+                      导入数据
+                      <input
+                        type="file"
+                        accept=".json"
+                        onChange={importData}
+                        className="hidden"
+                      />
+                    </label>
+                    <hr className="my-1 border-neutral-200" />
+                    <button
+                      onClick={clearAllData}
+                      className="w-full text-left px-3 py-2 text-sm text-error-600 hover:bg-error-50 rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <span className="w-4 h-4">🗑️</span>
+                      清空所有数据
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
         </div>
       </div>
 
@@ -901,41 +938,69 @@ export default function ItemKeeperApp() {
       )}
 
       {/* 智能输入区域 */}
-      <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mx-2 sm:mx-0">
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">
-          智能物品助手 {user && isSupabaseConfigured && <span className="text-sm text-green-600">☁️ 已同步</span>}
-        </h2>
-        <p className="text-gray-600 text-sm mb-4">
-          支持记录、查询、删除、分类、统计 - 一个输入框搞定所有需求
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="试试：我把身份证放在抽屉里 / 身份证在哪 / 删除身份证 / 给身份证加上证件标签 / 统计我的物品"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-base resize-none min-h-[96px] max-h-48"
-            rows={4}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
-                e.preventDefault()
-                handleSubmit()
-              }
-            }}
-            onInput={(e) => {
-              const textarea = e.target as HTMLTextAreaElement
-              textarea.style.height = 'auto'
-              const newHeight = Math.max(96, Math.min(textarea.scrollHeight, 192))
-              textarea.style.height = newHeight + 'px'
-            }}
-          />
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className="px-4 sm:px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex-shrink-0"
-          >
-            {isLoading ? '🤖 处理中...' : '发送'}
-          </button>
+      <div className="container-content">
+        <div className="card-hover p-6 sm:p-8 animate-in">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center mx-auto mb-4">
+              <span className="text-2xl">🤖</span>
+            </div>
+            <h2 className="text-2xl font-bold text-neutral-900 mb-2">
+              AI智能助手
+            </h2>
+            <p className="text-neutral-600 max-w-lg mx-auto text-balance">
+              支持自然语言交互，一句话搞定记录、查询、删除、分类、统计等所有操作
+            </p>
+          </div>
+          
+          <div className="max-w-2xl mx-auto space-y-4">
+            <div className="relative">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="试试说：我把身份证放在书桌抽屉里 / 身份证在哪 / 删除身份证 / 给身份证加上证件标签 / 统计我的物品..."
+                className="w-full px-4 py-4 pr-16 border-2 border-neutral-200 rounded-2xl bg-neutral-50/50 focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary-500/10 text-base placeholder-neutral-400 resize-none min-h-[120px] max-h-48 transition-all duration-200"
+                rows={4}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey && !isLoading) {
+                    e.preventDefault()
+                    handleSubmit()
+                  }
+                }}
+                onInput={(e) => {
+                  const textarea = e.target as HTMLTextAreaElement
+                  textarea.style.height = 'auto'
+                  const newHeight = Math.max(120, Math.min(textarea.scrollHeight, 192))
+                  textarea.style.height = newHeight + 'px'
+                }}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading || !input.trim()}
+                className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center shadow-lg hover:shadow-xl disabled:hover:shadow-lg group"
+              >
+                {isLoading ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <span className="group-hover:scale-110 transition-transform duration-200">🚀</span>
+                )}
+              </button>
+            </div>
+            
+            <div className="flex items-center justify-center gap-4 text-xs text-neutral-500">
+              <div className="flex items-center gap-1">
+                <kbd className="px-2 py-1 bg-neutral-100 rounded border text-neutral-600">Enter</kbd>
+                <span>发送</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <kbd className="px-2 py-1 bg-neutral-100 rounded border text-neutral-600">Shift</kbd>
+                <span>+</span>
+                <kbd className="px-2 py-1 bg-neutral-100 rounded border text-neutral-600">Enter</kbd>
+                <span>换行</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
         
         {/* 操作反馈 */}
         {lastAction === 'record' && (
