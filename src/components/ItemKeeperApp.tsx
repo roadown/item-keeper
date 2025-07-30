@@ -997,7 +997,6 @@ export default function ItemKeeperApp() {
               </div>
             </div>
           </div>
-          </div>
         </div>
       </div>
 
