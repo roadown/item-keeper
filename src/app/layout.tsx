@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/icon.svg',
-    apple: '/icon-192x192.png'
+    apple: '/icon.svg'
   }
 }
 
@@ -41,7 +41,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="物品管家" />
-        <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <script dangerouslySetInnerHTML={{
           __html: `
             if ('serviceWorker' in navigator) {

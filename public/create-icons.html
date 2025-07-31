@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>生成PWA图标</title>
+</head>
+<body>
+    <h2>PWA图标生成器</h2>
+    <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <br>
+    <button onclick="downloadIcon(192)">下载 192x192</button>
+    <button onclick="downloadIcon(512)">下载 512x512</button>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // 设置背景色
+            ctx.fillStyle = '#3B82F6';
+            ctx.fillRect(0, 0, size, size);
+            
+            // 添加圆角效果
+            ctx.save();
+            ctx.beginPath();
+            const radius = size * 0.125; // 12.5% 圆角
+            if (ctx.roundRect) {
+                ctx.roundRect(0, 0, size, size, radius);
+            } else {
+                // 手动绘制圆角矩形
+                ctx.moveTo(radius, 0);
+                ctx.lineTo(size - radius, 0);
+                ctx.quadraticCurveTo(size, 0, size, radius);
+                ctx.lineTo(size, size - radius);
+                ctx.quadraticCurveTo(size, size, size - radius, size);
+                ctx.lineTo(radius, size);
+                ctx.quadraticCurveTo(0, size, 0, size - radius);
+                ctx.lineTo(0, radius);
+                ctx.quadraticCurveTo(0, 0, radius, 0);
+            }
+            ctx.clip();
+            ctx.fillStyle = '#3B82F6';
+            ctx.fillRect(0, 0, size, size);
+            ctx.restore();
+            
+            // 绘制📦 emoji
+            ctx.fillStyle = 'white';
+            ctx.font = `${size * 0.5}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('📦', size / 2, size / 2);
+        }
+        
+        function downloadIcon(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // 生成图标
+        createIcon(192);
+        createIcon(512);
+    </script>
+</body>
+</html>
